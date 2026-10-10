@@ -29,15 +29,37 @@ def generate_advice(season, plant_type):
     return f"{season_advice}\n{plant_advice}"
 
 
-def main():
-    """Display advice using the starter program's default choices."""
-    # User input will replace these defaults in issue #2.
-    season = "summer"
-    plant_type = "flower"
+def get_valid_choice(prompt, valid_choices):
+    """Ask repeatedly until the user enters one of the supported choices.
 
+    Ignore surrounding whitespace and letter case so inputs such as
+    ' SUMMER ' are accepted as 'summer'.
+    """
+    while True:
+        choice = input(prompt).strip().lower()
+
+        if choice in valid_choices:
+            return choice
+
+        # Explain the available choices before prompting again.
+        print(f"Invalid choice. Please choose: {', '.join(valid_choices)}.")
+
+
+def main():
+    """Collect valid user choices and display matching gardening advice."""
+    season = get_valid_choice(
+        "Choose a season (summer/winter): ",
+        ("summer", "winter"),
+    )
+    plant_type = get_valid_choice(
+        "Choose a plant type (flower/vegetable): ",
+        ("flower", "vegetable"),
+    )
+
+    print("\nGardening advice:")
     print(generate_advice(season, plant_type))
 
 
-# Importing this module makes its functions available without printing.
+# Importing the module exposes its functions without starting the prompts.
 if __name__ == "__main__":
     main()
